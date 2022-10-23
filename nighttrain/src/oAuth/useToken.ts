@@ -1,31 +1,29 @@
 import { Session } from "inspector"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useLocalStorage } from "../hook/useStorage"
 import { IToken, token } from "./token"
-import { StorageKey } from "./type"
+import { IForageRockSession, StorageKey } from "./type"
 
-export const useToken = () => {
+export const useToken = (forgeRockSession:IForageRockSession) => {
   const [loading, setLoading] = useState<boolean|undefined>()
 	const [error, setError] = useState<any>()
 	const [tokens, setTokens] = useState<IToken | undefined>()
-
-	const [session, setSession, removeSession] 
-		= useLocalStorage(StorageKey.Session, null)
-
-	const [accessToken, setAccessToken] = useLocalStorage(StorageKey.accessToken, null)
-	const [refreshToken, setRefreshToken] = useLocalStorage(StorageKey.refreshToken, null)	
-
+	
 	useEffect(() => {
-		if(!session) {
+		if(!forgeRockSession) {
 			return
 		}
 
 		const getTokens = async () => {
 			setLoading(true)
-			const tokens = await token(session)
-			removeSession()
-			setAccessToken(tokens.accessToken)
-			setRefreshToken(tokens.refreshToken)
+			
+			const tokens = await token(forgeRockSession.session)
+
+			window.localStorage.removeItem(StorageKey.Session)
+		  
+			window.localStorage.setItem(StorageKey.AuthTokens, 
+				JSON.stringify(tokens))
+
 			setTokens(tokens)
 			setLoading(false)
 		}
@@ -34,7 +32,7 @@ export const useToken = () => {
 			setLoading(undefined)
 			setError(e)
 		})
-	}, [session])
+	}, [forgeRockSession])
 
 	return [tokens, loading, error]
 }

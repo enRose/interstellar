@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { Container, Form, Button, Alert, Card } from "react-bootstrap";
+import { Container, Form, Button, Alert, Card } from "react-bootstrap"
 import {useAuthenticate} from '../oAuth/useAuthenticate'
+import { useToken} from "../oAuth/useToken"
 
 function Login({ onLoginSuccessful }: any) {
   const [accessId, setAccessId] = useState('')
@@ -15,8 +16,10 @@ function Login({ onLoginSuccessful }: any) {
   const [forgeRockSession, loading, isLoggedIn, error] 
     = useAuthenticate(logonClick, accessId, password)
 
+  useToken(forgeRockSession)
+
   useEffect(() => {
-    isLoggedIn && onLoginSuccessful() 
+    isLoggedIn && onLoginSuccessful()
       
     error && setHasError(error)
   }, [loading, forgeRockSession])

@@ -20,5 +20,7 @@ export async function token(session: string): Promise<IToken> {
 
 export interface IToken {
 	accessToken: string
+	accessTokenExpiry: string
 	refreshToken: string
+	refreshTokenExpiry: string
 }

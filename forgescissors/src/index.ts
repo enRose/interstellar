@@ -40,7 +40,7 @@ app.use(session({
 }))
 
 app.use('/api/auth', require('./authenticate'))
-app.use('api/auth', require('./token'))
+app.use('/api/auth', require('./token'))
 app.use('/api/acc', require('./acc'))
 
 app.listen(PORT, () => {

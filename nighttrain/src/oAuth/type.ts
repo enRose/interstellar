@@ -1,7 +1,6 @@
 export enum StorageKey {
 	Session = 'forgeRockSession',
-	accessToken = 'accessToken',
-	refreshToken = 'refreshToken'
+	AuthTokens = 'authTokens',
 }
 
 export interface IForageRockSession {

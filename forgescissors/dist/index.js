@@ -36,7 +36,8 @@ app.use((0, express_session_1.default)({
     resave: true,
     saveUninitialized: true
 }));
-app.use('/api/auth', require('./auth'));
+app.use('/api/auth', require('./authenticate'));
+app.use('/api/auth', require('./token'));
 app.use('/api/acc', require('./acc'));
 app.listen(PORT, function () {
     console.log("App listening on port ".concat(PORT));

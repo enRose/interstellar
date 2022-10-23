@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -48,46 +37,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
-var cross_fetch_1 = require("cross-fetch");
+var express_validator_1 = require("express-validator");
+var validator_1 = require("./validator");
 var router = (0, express_1.Router)();
-var AIC_URL = "https://api.artic.edu/api/v1/artworks/search?q=";
-var getAccs = function (req, res) {
+var login = function (req, res) {
     if (res === void 0) { res = express_1.response; }
     return __awaiter(void 0, void 0, void 0, function () {
-        var id, resp, _a, data, dataWithUrls, err_1;
+        var _a, accessId, password;
         return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    id = req.params.id;
-                    console.error("acc route: ".concat(id));
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 4, , 5]);
-                    return [4 /*yield*/, (0, cross_fetch_1.fetch)("".concat(AIC_URL).concat(id, "&limit=15&fields=id,title,image_id,date_display,artist_display,place_of_origin,medium_display"), {
-                            method: "GET",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        })];
-                case 2:
-                    resp = _b.sent();
-                    if (resp.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-                    return [4 /*yield*/, resp.json()];
-                case 3:
-                    _a = (_b.sent()).data, data = _a === void 0 ? [] : _a;
-                    dataWithUrls = data.map(function (image) { return (__assign(__assign({}, image), { image_url: "https://www.artic.edu/iiif/2/".concat(image.image_id, "/full/843,/0/default.jpg") })); });
-                    res.json(dataWithUrls);
-                    return [3 /*break*/, 5];
-                case 4:
-                    err_1 = _b.sent();
-                    console.error(err_1);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+            _a = req.body, accessId = _a.accessId, password = _a.password;
+            console.log("accessId: ".concat(accessId, ", pw: ").concat(password));
+            if (password === 'yini') {
+                return [2 /*return*/, res.status(400).json({
+                        msg: "User / Password are incorrect",
+                    })];
             }
+            res.json({
+                username: 'Test User',
+                session: 'This is a session token',
+                // 5 minutes
+                expiry: new Date(Date.now() + (5 * 60 * 1000))
+            });
+            return [2 /*return*/];
         });
     });
 };
-router.get("/:id", getAccs);
+router.post('/login', [
+    (0, express_validator_1.check)('accessId', 'AccessId is required').isNumeric(),
+    (0, express_validator_1.check)('password', 'Password is required').not().isEmpty(),
+    validator_1.validateInput
+], login);
 module.exports = router;

@@ -8,6 +8,8 @@ const AIC_URL = "https://api.artic.edu/api/v1/artworks/search?q="
 const getAccs = async (req: any, res = response) => {
 	const { id } = req.params
 
+	console.error(`acc route: ${id}`)
+
 	try {
 		const resp = await fetch(
 			`${AIC_URL}${id}&limit=15&fields=id,title,image_id,date_display,artist_display,place_of_origin,medium_display`,
