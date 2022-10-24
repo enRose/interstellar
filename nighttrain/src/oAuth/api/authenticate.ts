@@ -1,4 +1,4 @@
-import { IForageRockSession } from "./type"
+import { IForageRockSession } from "../type"
 
 export async function login({ accessId, password }:
 	{ accessId: string, password: string }):

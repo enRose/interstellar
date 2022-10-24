@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Container, Form, Button, Alert, Card } from "react-bootstrap"
-import {useAuthenticate} from '../oAuth/useAuthenticate'
-import { useToken} from "../oAuth/useToken"
+import {useAuthenticate} from '../oAuth/hook/useAuthenticate'
+import { useToken} from "../oAuth/hook/useToken"
 
 function Login({ onLoginSuccessful }: any) {
   const [accessId, setAccessId] = useState('')

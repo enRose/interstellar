@@ -1,5 +1,5 @@
 export enum StorageKey {
-	Session = 'forgeRockSession',
+	ForgeRockSession = 'forgeRockSession',
 	AuthTokens = 'authTokens',
 }
 

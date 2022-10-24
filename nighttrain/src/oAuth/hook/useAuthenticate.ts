@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { useLocalStorage } from "../hook/useStorage"
-import {login} from './authenticate'
-import { IForageRockSession, StorageKey } from "./type"
+import { useLocalStorage } from "../../hook/useStorage"
+import {login} from '../api/authenticate'
+import { IForageRockSession, StorageKey } from "../type"
 
 export const useIsLoggedIn = () => {
-	const [session] = useLocalStorage(StorageKey.Session, null)
+	const [session] = useLocalStorage(StorageKey.ForgeRockSession, null)
 
 	return !!session
 }
@@ -16,9 +16,6 @@ export const useAuthenticate = (trigger:boolean, accessId: string, password: str
 	const [error, setError] = useState<any>()
 	const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-	const [session, setSession, removeSession] 
-		= useLocalStorage(StorageKey.Session, null)
-
 	useEffect(() => {
 		if(trigger !== true) {
 			return
@@ -28,7 +25,7 @@ export const useAuthenticate = (trigger:boolean, accessId: string, password: str
 			setLoading(true)
 			const session = await login({accessId, password})
 			setForgeRockSession(session)
-			setSession(session)
+			window.localStorage.setItem(StorageKey.ForgeRockSession, JSON.stringify(session))
 			setIsLoggedIn(true)
 			setLoading(false)
 		}
