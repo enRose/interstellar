@@ -13,6 +13,9 @@ export const useIdle = () => {
 
 		const resetTimer = ():any => {
 			clearTimeout(time)
+
+			// check local storage access token expiry here.
+			const logoutafter = 5000 
 			time = setTimeout(logout, 5000)
 		}
 

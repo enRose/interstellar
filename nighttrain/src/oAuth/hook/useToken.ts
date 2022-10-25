@@ -17,8 +17,7 @@ export const useToken = (forgeRockSession:IForageRockSession) => {
 			const tokens = await token(forgeRockSession.session)
 			
 			window.localStorage.removeItem(StorageKey.ForgeRockSession)
-			window.localStorage.setItem(StorageKey.AuthTokens, 
-				JSON.stringify(tokens))
+			window.localStorage.setItem(StorageKey.AuthTokens, JSON.stringify(tokens))
 
 			setTokens(tokens)
 			setLoading(false)
